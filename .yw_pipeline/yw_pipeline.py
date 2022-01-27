@@ -8,6 +8,11 @@ from youwol_utils.context import Context
 from youwol_utils.utils_paths import parse_json
 
 
+class InitStep(PipelineStep):
+    id: str = "init"
+    run: str = "yarn"
+    
+
 class BuildStep(PipelineStep):
     id: str = "build"
     run: str = "echo 'Nothing to do'"
@@ -36,6 +41,7 @@ class PipelineFactory(IPipelineFactory):
             projectName=lambda path: parse_json(path / "package.json")["name"],
             projectVersion=lambda path: parse_json(path / "package.json")["version"],
             steps=[
+                InitStep(),
                 BuildStep(),
                 PublishCdnLocalStep(packagedArtifacts=['dist']),
                 PublishCdnRemoteStep()
@@ -44,7 +50,7 @@ class PipelineFactory(IPipelineFactory):
                 Flow(
                     name="prod",
                     dag=[
-                        "build > publish-local > publish-remote "
+                        "init > build > publish-local > publish-remote "
                     ]
                 )
             ]
