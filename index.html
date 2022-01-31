@@ -32,7 +32,8 @@
             ],
             css: [
                 'bootstrap#4.4.1~bootstrap.min.css',
-                'fontawesome#5.12.1~css/all.min.css'
+                'fontawesome#5.12.1~css/all.min.css',
+                '@youwol/fv-widgets#latest~dist/assets/styles/style.youwol.css'
             ],
         })
           
@@ -40,7 +41,7 @@
         let {CdnSessionsStorageClient} = window['@youwol/platform-essentials']
         
         let {BehaviorSubject, combineLatest} = window.rxjs
-        let {map, filter, mergeMap} = window.rxjs.operators
+        let {map, filter, mergeMap, skip} = window.rxjs.operators
 
         let classes = {
             chevron:'fas fa-chevron-down p-2 fa-2x text-secondary',
@@ -70,6 +71,7 @@
                     this.items$.next(d.items ? d.items : [])
                 })
                 this.items$.pipe(
+                    skip(1),
                     mergeMap( (items) => 
                         this.client.applications.postData("@youwol/todo-app-js", AppState.STORAGE_KEY, { items })
                     )
@@ -237,7 +239,11 @@
 
             constructor(appState){
 
-                let class$ = (target) => flux.attr$(appState.filterMode$, (mode) => mode == target ? 'selected' : '')
+                let class$ = (target) => flux.attr$(
+                    appState.filterMode$, 
+                    (mode) => mode == target ? 'selected' : '',
+                    { wrapper: (d) => `${d} mx-2 fv-pointer ` }
+                    )
         
                 this.children = [
                    {
@@ -251,15 +257,15 @@
                         class: 'd-flex align-items-center mx-auto',
                         children: [
                             {
-                                tag: 'a', innerText: 'All', class: class$(Filter.ALL), href: '#/all',
+                                innerText: 'All', class: class$(Filter.ALL),
                                 onclick: () => appState.setFilter(Filter.ALL)
                             },
                             {
-                                tag: 'a', innerText: 'Active', class: class$(Filter.ACTIVE), href: '#/active',
+                                innerText: 'Active', class: class$(Filter.ACTIVE),
                                 onclick: () => appState.setFilter(Filter.ACTIVE)
                             },
                             {
-                                tag: 'a', innerText: 'Completed', class: class$(Filter.COMPLETED), href: '#/completed',
+                                innerText: 'Completed', class: class$(Filter.COMPLETED),
                                 onclick: () => appState.setFilter(Filter.COMPLETED)
                             }
                         ]
