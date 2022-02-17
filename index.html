@@ -28,7 +28,7 @@
         await cdnClient.install({
             modules: [
                 '@youwol/flux-view',
-                '@youwol/platform-essentials'
+                '@youwol/http-clients',
             ],
             css: [
                 'bootstrap#4.4.1~bootstrap.min.css',
@@ -38,10 +38,10 @@
         })
           
         let flux = window['@youwol/flux-view']
-        let {CdnSessionsStorageClient} = window['@youwol/platform-essentials']
-        
-        let {BehaviorSubject, combineLatest} = window.rxjs
-        let {map, filter, mergeMap, skip} = window.rxjs.operators
+        let { CdnSessionsStorage } = window['@youwol/http-clients']
+
+        let { BehaviorSubject, combineLatest } = window.rxjs
+        let { map, filter, mergeMap, skip } = window.rxjs.operators
 
         let classes = {
             chevron:'fas fa-chevron-down p-2 fa-2x text-secondary',
@@ -59,21 +59,21 @@
         }
     
         class AppState {
-    
-            static STORAGE_KEY = "todo-list";
-            client = new CdnSessionsStorageClient()
+
+            static STORAGE_KEY = 'todo-list'
+            client = new CdnSessionsStorage.CdnSessionsStorageClient()
             constructor() {
 
                 this.items$ = new BehaviorSubject([])
 
-                this.client.applications.getData("@youwol/todo-app-js", AppState.STORAGE_KEY)
+                this.client.applications.getData$('@youwol/todo-app-js', AppState.STORAGE_KEY)
                 .subscribe( (d) => {
                     this.items$.next(d.items ? d.items : [])
                 })
                 this.items$.pipe(
                     skip(1),
-                    mergeMap( (items) => 
-                        this.client.applications.postData("@youwol/todo-app-js", AppState.STORAGE_KEY, { items })
+                    mergeMap( (items) =>
+                        this.client.applications.postData$('@youwol/todo-app-js', AppState.STORAGE_KEY, { items })
                     )
                 ).subscribe(items => {
                     console.log("data saved")
