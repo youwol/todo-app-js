@@ -4,7 +4,7 @@ from pydantic import BaseModel
 from youwol.environment.forward_declaration import YouwolEnvironment
 from youwol.environment.models import IPipelineFactory
 from youwol.environment.models_project import Artifact, Flow, Pipeline, PipelineStep, FileListing, BrowserApp, \
-    Execution, FromAsset
+    Execution, FromAsset, BrowserAppGraphics
 from youwol.pipelines.pipeline_typescript_weback_npm import PublishCdnRemoteStep, PublishCdnLocalStep
 from youwol_utils.context import Context
 from youwol_utils.utils_paths import parse_json
@@ -33,7 +33,7 @@ class BuildStep(PipelineStep):
 
 
 class PipelineConfig(BaseModel):
-    target: BrowserApp = BrowserApp()
+    target: BrowserApp
 
 
 def pipeline(config: PipelineConfig) -> Pipeline:
@@ -69,7 +69,6 @@ class PipelineFactory(IPipelineFactory):
 
         config = PipelineConfig(
             target=BrowserApp(
-                icon={'class': 'fas fa-tasks'},
                 displayName="Todos",
                 execution=Execution(
                     standalone=True,
@@ -79,7 +78,11 @@ class PipelineFactory(IPipelineFactory):
                             parameters={"id": 'rawId'}
                         )
                     ]
-                )
+                ),
+                graphics=BrowserAppGraphics(
+                    appIcon={'class': 'fas fa-check-circle fa-2x'},
+                    fileIcon={}
+                ),
             )
         )
         return pipeline(config)
