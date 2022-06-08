@@ -61,19 +61,19 @@
         class AppState {
 
             static STORAGE_KEY = 'todo-list'
-            client = new CdnSessionsStorage.CdnSessionsStorageClient()
+            client = new CdnSessionsStorage.Client()
             constructor() {
 
                 this.items$ = new BehaviorSubject([])
 
-                this.client.applications.getData$('@youwol/todo-app-js', AppState.STORAGE_KEY)
+                this.client.getData$({packageName:'@youwol/todo-app-js', dataName:AppState.STORAGE_KEY})
                 .subscribe( (d) => {
                     this.items$.next(d.items ? d.items : [])
                 })
                 this.items$.pipe(
                     skip(1),
                     mergeMap( (items) =>
-                        this.client.applications.postData$('@youwol/todo-app-js', AppState.STORAGE_KEY, { items })
+                        this.client.postData$({packageName:'@youwol/todo-app-js', dataName:AppState.STORAGE_KEY, body:{ items }})
                     )
                 ).subscribe(items => {
                     console.log("data saved")
