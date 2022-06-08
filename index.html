@@ -75,7 +75,7 @@
                     mergeMap( (items) =>
                         this.client.postData$({packageName:'@youwol/todo-app-js', dataName:AppState.STORAGE_KEY, body:{ items }})
                     )
-                ).subscribe(items => {
+                ).subscribe( () => {
                     console.log("data saved")
                 })
 
@@ -87,7 +87,7 @@
                 )
                 this.filterMode$ = new BehaviorSubject(Filter.ALL)
                 this.filterFcts = {
-                    [Filter.ALL]: (item) => true,
+                    [Filter.ALL]: () => true,
                     [Filter.ACTIVE]: (item) => !item.done,
                     [Filter.COMPLETED]: (item) => item.done
                 }
@@ -108,16 +108,16 @@
             }
         
             deleteItem(id) {
-                this.items$.next(this.getItems().filter(item => item.id != id))
+                this.items$.next(this.getItems().filter(item => item.id !== id))
             }
         
             toggleItem(id) {
-                let items = this.getItems().map(item => item.id == id ? { id: item.id, name: item.name, done: !item.done } : item)
+                let items = this.getItems().map(item => item.id === id ? { id: item.id, name: item.name, done: !item.done } : item)
                 this.items$.next(items)
             }
         
             setName(id, name) {
-                let items = this.getItems().map(item => item.id == id ? { id: item.id, name, done: item.done } : item)
+                let items = this.getItems().map(item => item.id === id ? { id: item.id, name, done: item.done } : item)
                 this.items$.next(items)
             }
         
@@ -157,7 +157,7 @@
                                 tag: 'input', autofocus: 'autofocus', autocomplete: 'off',
                                 placeholder: "What needs to be done?", class: 'new-todo',
                                 onkeypress: (ev) => { 
-                                    (ev.key == "Enter") && appState.addItem(ev.target.value) && (ev.target.value = "")
+                                    (ev.key === "Enter") && appState.addItem(ev.target.value) && (ev.target.value = "")
                                 }
                             }
                         ]
@@ -172,7 +172,7 @@
             type = 'text'
             onclick = (ev) => ev.stopPropagation()
             onkeypress = (ev) => { 
-                if(ev.key == "Enter") {
+                if(ev.key === "Enter") {
                     // otherwise the onblur event is triggered while the element does not exist anymore
                     ev.target.onblur = () => {}
                     this.appState.setName( this.item.id, ev.target.value) 
@@ -188,7 +188,7 @@
         class ItemPresentationView {
 
             tag = 'span'            
-            ondblclick = (ev) => this.edited$.next(true)
+            ondblclick = () => this.edited$.next(true)
 
             constructor(item, edited$){
                 Object.assign(this, {edited$})
@@ -241,7 +241,7 @@
 
                 let class$ = (target) => flux.attr$(
                     appState.filterMode$, 
-                    (mode) => mode == target ? 'selected' : '',
+                    (mode) => mode === target ? 'selected' : '',
                     { wrapper: (d) => `${d} mx-2 fv-pointer ` }
                     )
         
