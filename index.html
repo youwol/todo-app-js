@@ -23,9 +23,9 @@
 
 <script type="module">
 
-        let cdnClient = window['@youwol/cdn-client']
+        const cdnClient = window['@youwol/cdn-client']
         
-        await cdnClient.install({
+        const {flux, httpClients} = await cdnClient.install({
             modules: [
                 '@youwol/flux-view',
                 '@youwol/http-clients',
@@ -35,15 +35,18 @@
                 'fontawesome#5.12.1~css/all.min.css',
                 '@youwol/fv-widgets#latest~dist/assets/styles/style.youwol.css',
             ],
+            aliases:{
+                flux: '@youwol/flux-view',
+                httpClients:'@youwol/http-clients',
+            }
         })
 
-        let flux = window['@youwol/flux-view']
-        let { CdnSessionsStorage } = window['@youwol/http-clients']
+        const { CdnSessionsStorage } = httpClients
 
-        let { BehaviorSubject, combineLatest } = window.rxjs
-        let { map, filter, mergeMap, skip } = window.rxjs.operators
+        const { BehaviorSubject, combineLatest } = window.rxjs
+        const { map, filter, mergeMap, skip } = window.rxjs.operators
 
-        let classes = {
+        const classes = {
             chevron: 'fas fa-chevron-down p-2 fa-2x text-secondary',
             itemViewContainer: 'd-flex align-items-center justify-content-between item-view',
             itemCheckContainer: 'border rounded-circle m-2 d-flex flex-column justify-content-center item-check-container',
@@ -52,7 +55,7 @@
             footer: 'd-flex align-items-center px-3 border-top py-2 text-secondary',
         }
 
-        let Filter = {
+        const Filter = {
             ALL: 1,
             ACTIVE: 2,
             COMPLETED: 3 
@@ -97,12 +100,12 @@
             }
         
             toggleAll() {
-                let completed = this.getItems().reduce((acc, item) => acc && item.done, true)
+                const completed = this.getItems().reduce((acc, item) => acc && item.done, true)
                 this.items$.next(this.getItems().map(item => ({ id: item.id, name: item.name, done: !completed })))
             }
         
             addItem(name) {
-                let item = { id: Date.now(), name, completed: false } 
+                const item = { id: Date.now(), name, completed: false }
                 this.items$.next([...this.getItems(), item])
                 return item
             }
@@ -112,12 +115,12 @@
             }
         
             toggleItem(id) {
-                let items = this.getItems().map(item => item.id === id ? { id: item.id, name: item.name, done: !item.done } : item)
+                const items = this.getItems().map(item => item.id === id ? { id: item.id, name: item.name, done: !item.done } : item)
                 this.items$.next(items)
             }
         
             setName(id, name) {
-                let items = this.getItems().map(item => item.id === id ? { id: item.id, name, done: item.done } : item)
+                const items = this.getItems().map(item => item.id === id ? { id: item.id, name, done: item.done } : item)
                 this.items$.next(items)
             }
         
@@ -239,7 +242,7 @@
 
             constructor(appState){
 
-                let class$ = (target) => flux.attr$(
+                const class$ = (target) => flux.attr$(
                     appState.filterMode$, 
                     (mode) => mode === target ? 'selected' : '',
                     { wrapper: (d) => `${d} mx-2 fv-pointer ` }
@@ -304,9 +307,9 @@
             }
         }
 
-        let state = new AppState()
-    
-        let div = flux.render({
+        const state = new AppState()
+
+        const div = flux.render({
             children:[
                 new AppView(state),
                 new HelpView() 
