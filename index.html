@@ -25,7 +25,7 @@
 
         const cdnClient = window['@youwol/cdn-client']
         
-        const {flux, httpClients} = await cdnClient.install({
+        const {FluxView, HttpClients} = await cdnClient.install({
             modules: [
                 '@youwol/flux-view',
                 '@youwol/http-clients',
@@ -36,12 +36,12 @@
                 '@youwol/fv-widgets#latest~dist/assets/styles/style.youwol.css',
             ],
             aliases:{
-                flux: '@youwol/flux-view',
-                httpClients:'@youwol/http-clients',
+                FluxView: '@youwol/flux-view',
+                HttpClients:'@youwol/http-clients',
             }
         })
 
-        const { CdnSessionsStorage } = httpClients
+        const { CdnSessionsStorage } = HttpClients
 
         const { BehaviorSubject, combineLatest } = window.rxjs
         const { map, filter, mergeMap, skip } = window.rxjs.operators
@@ -149,7 +149,7 @@
                         children: [
                             { 
                                 tag: 'i', 
-                                class: flux.attr$(
+                                class: FluxView.attr$(
                                     appState.completed$, 
                                     (completed) => completed ? 'text-dark' : 'text-light',
                                     { wrapper: (d) => `${d} ${classes.chevron}` }
@@ -221,7 +221,7 @@
                             { class: item.done ? classes.itemSuccess : '' }
                         ]
                     },
-                    flux.child$(
+                    FluxView.child$(
                         this.edited$,
                         (edited) => edited 
                             ? new ItemEditionView(item, appState)
@@ -242,7 +242,7 @@
 
             constructor(appState){
 
-                const class$ = (target) => flux.attr$(
+                const class$ = (target) => FluxView.attr$(
                     appState.filterMode$, 
                     (mode) => mode === target ? 'selected' : '',
                     { wrapper: (d) => `${d} mx-2 fv-pointer ` }
@@ -251,7 +251,7 @@
                 this.children = [
                    {
                         tag: 'span',
-                        innerText: flux.attr$(
+                        innerText: FluxView.attr$(
                             appState.remaining$, 
                             (items) => items.length, 
                             { wrapper: (d) => `${d} item${d > 1 ? 's' : ''} left`})
@@ -297,7 +297,7 @@
                 this.children = [
                     new HeaderView(appState),
                     { 
-                        children: flux.children$(
+                        children: FluxView.children$(
                             appState.selectedItems$,
                             (items) => items.map(item => new ItemView(item, appState)) 
                         )
@@ -309,7 +309,7 @@
 
         const state = new AppState()
 
-        const div = flux.render({
+        const div = FluxView.render({
             children:[
                 new AppView(state),
                 new HelpView() 
