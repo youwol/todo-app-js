@@ -39,7 +39,7 @@ class PipelineFactory(IPipelineFactory):
 
     async def get(self, _env: YouwolEnvironment, ctx: Context):
 
-        publish_remote_steps, dags = await create_sub_pipelines_publish(start_step="publish-local", context=ctx)
+        publish_remote_steps, dags = await create_sub_pipelines_publish(start_step="cdn-local", context=ctx)
 
         return Pipeline(
             target=BrowserApp(
@@ -59,15 +59,13 @@ class PipelineFactory(IPipelineFactory):
                 InitStep(),
                 BuildStep(),
                 PublishCdnLocalStep(packagedArtifacts=['dist']),
-                *publish_remote_steps
-            ],
+            ] + publish_remote_steps,
             flows=[
                 Flow(
                     name="prod",
                     dag=[
-                        "init > build > publish-local",
-                        *dags
-                    ]
+                        "init > build > cdn-local",
+                    ] + dags
                 )
             ]
         )
