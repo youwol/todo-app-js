@@ -13,7 +13,10 @@ from youwol_utils.utils_paths import parse_json
 class InitStep(PipelineStep):
     id: str = "init"
     run: str = "yarn"
-    
+    sources: FileListing = FileListing(
+        include=["package.json"]
+    )
+
 
 class BuildStep(PipelineStep):
     id: str = "build"
