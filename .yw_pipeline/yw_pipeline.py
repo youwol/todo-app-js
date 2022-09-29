@@ -4,7 +4,8 @@ from youwol.environment.forward_declaration import YouwolEnvironment
 from youwol.environment.models import IPipelineFactory
 from youwol.environment.models_project import Artifact, Flow, Pipeline, PipelineStep, FileListing, BrowserApp, \
     Execution, BrowserAppGraphics
-from youwol.pipelines.pipeline_typescript_weback_npm import PublishCdnRemoteStep, PublishCdnLocalStep
+from youwol.pipelines.pipeline_typescript_weback_npm import PublishCdnLocalStep, \
+    create_sub_pipelines_publish
 from youwol_utils.context import Context
 from youwol_utils.utils_paths import parse_json
 
@@ -36,7 +37,9 @@ class PipelineFactory(IPipelineFactory):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-    async def get(self, _env: YouwolEnvironment, _ctx: Context):
+    async def get(self, _env: YouwolEnvironment, ctx: Context):
+
+        publish_remote_steps, dags = await create_sub_pipelines_publish(start_step="publish-local", context=ctx)
 
         return Pipeline(
             target=BrowserApp(
@@ -56,13 +59,14 @@ class PipelineFactory(IPipelineFactory):
                 InitStep(),
                 BuildStep(),
                 PublishCdnLocalStep(packagedArtifacts=['dist']),
-                PublishCdnRemoteStep()
+                *publish_remote_steps
             ],
             flows=[
                 Flow(
                     name="prod",
                     dag=[
-                        "init > build > publish-local > publish-remote "
+                        "init > build > publish-local",
+                        *dags
                     ]
                 )
             ]
