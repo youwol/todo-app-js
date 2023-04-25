@@ -6,13 +6,13 @@ See the py-youwol documentation https://l.youwol.com/doc/py-youwol
 """
 
 from typing import List
-from youwol.environment import YouwolEnvironment
-from youwol.environment.models_project import Artifact, Flow, Pipeline, PipelineStep, FileListing, BrowserApp, \
+from youwol.app.environment import YouwolEnvironment
+from youwol.app.environment.models_project import Artifact, Flow, Pipeline, PipelineStep, FileListing, BrowserApp, \
     Execution, BrowserAppGraphics, IPipelineFactory
 from youwol.pipelines.pipeline_typescript_weback_npm import PublishCdnLocalStep, \
     create_sub_pipelines_publish
-from youwol_utils.context import Context
-from youwol_utils.utils_paths import parse_json
+from youwol.utils.context import Context
+from youwol.utils.utils_paths import parse_json
 
 index_html = "index.html"
 package_json = "package.json"
