@@ -1,6 +1,6 @@
 {
     "name": "@youwol/todo-app-js",
-    "version": "0.0.2",
+    "version": "0.0.3-wip",
     "main": "index.html",
     "scripts": {
         "serve": "http-server -p 4000"
