@@ -1,14 +1,16 @@
 {
-    "name": "@youwol/todo-app-js",
-    "version": "0.0.3-wip",
-    "main": "index.html",
-    "scripts": {
-        "serve": "http-server -p 4000"
-    },
-    "youwol": {
-        "type": "application"
-    },
-    "devDependencies": {
-        "http-server": "14.1.0"
-    }
+  "name": "@youwol/todo-app-js",
+  "version": "0.0.3-wip",
+  "main": "index.html",
+  "scripts": {
+    "serve": "http-server -p 4000"
+  },
+  "youwol": {
+    "type": "application"
+  },
+  "devDependencies": {
+    "http-server": "14.1.0",
+    "@youwol/eslint-config": "^1.2.0",
+    "@youwol/prettier-config": "^1.2.0"
+  }
 }
