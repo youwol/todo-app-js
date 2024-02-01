@@ -16,7 +16,7 @@ const { FluxView, HttpClients } = await cdnClient.install({
 const { CdnSessionsStorage } = HttpClients;
 
 const { BehaviorSubject, combineLatest } = window.rxjs;
-const { map, filter, mergeMap, skip } = window.rxjs.operators;
+const { map, mergeMap, skip } = window.rxjs.operators;
 
 const classes = {
   chevron: "fas fa-chevron-down p-2 fa-2x text-secondary",
@@ -209,7 +209,7 @@ class ItemPresentationView {
 class ItemView {
   tag = "header";
   class = classes.itemViewContainer;
-  edited$ = new rxjs.BehaviorSubject(false);
+  edited$ = new window.rxjs.BehaviorSubject(false);
 
   constructor(item, appState) {
     this.children = [
