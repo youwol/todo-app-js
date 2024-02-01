@@ -3,6 +3,9 @@
   "version": "0.0.3-wip",
   "main": "src/index.html",
   "scripts": {
+    "auto-gen": "echo 'script included for CI'",
+    "build": "echo 'script included for CI'",
+    "doc": "echo 'script included for CI'",
     "serve": "http-server -p 4000",
     "test": "echo 'no test implemented'"
   },
