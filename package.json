@@ -1,14 +1,20 @@
 {
-    "name": "@youwol/todo-app-js",
-    "version": "0.0.2",
-    "main": "index.html",
-    "scripts": {
-        "serve": "http-server -p 4000"
-    },
-    "youwol": {
-        "type": "application"
-    },
-    "devDependencies": {
-        "http-server": "14.1.0"
-    }
+  "name": "@youwol/todo-app-js",
+  "version": "0.0.3-wip",
+  "main": "src/index.html",
+  "scripts": {
+    "auto-gen": "echo 'script included for CI'",
+    "build": "echo 'script included for CI'",
+    "doc": "echo 'script included for CI'",
+    "serve": "http-server -p 4000",
+    "test": "echo 'no test implemented'"
+  },
+  "youwol": {
+    "type": "application"
+  },
+  "devDependencies": {
+    "http-server": "14.1.0",
+    "@youwol/eslint-config": "^1.2.0",
+    "@youwol/prettier-config": "^1.2.0"
+  }
 }

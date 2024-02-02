@@ -14,11 +14,12 @@ from youwol.pipelines.pipeline_typescript_weback_npm import PublishCdnLocalStep,
 from youwol.utils.context import Context
 from youwol.utils.utils_paths import parse_json
 
-index_html = "index.html"
+index_html = "src/index.html"
 package_json = "package.json"
-style_css = "style.css"
+style_css = "src/style.css"
+script = "src/script.js"
 
-all_files = [index_html, package_json, style_css]
+all_files = [index_html, package_json, style_css, script]
 
 
 class InitStep(PipelineStep):
