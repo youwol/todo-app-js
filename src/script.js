@@ -1,6 +1,6 @@
-const cdnClient = window["@youwol/cdn-client"];
+const webpm = window["webpm"];
 
-const { FluxView, HttpClients } = await cdnClient.install({
+const { FluxView, HttpClients } = await webpm.install({
   modules: ["@youwol/flux-view", "@youwol/http-clients"],
   css: [
     "bootstrap#4.4.1~bootstrap.min.css",
