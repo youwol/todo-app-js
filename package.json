@@ -1,6 +1,6 @@
 {
   "name": "@youwol/todo-app-js",
-  "version": "0.0.3-wip",
+  "version": "0.0.4-wip",
   "main": "src/index.html",
   "scripts": {
     "auto-gen": "echo 'script included for CI'",
